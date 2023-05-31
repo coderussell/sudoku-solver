@@ -19,22 +19,27 @@ export default function isComplete(sectionType: 'rows' | 'columns' | 'squares', 
 }
 
 export function getCompleteSectionIndices(input: number[]): CompleteSections {
-  let completeRows: number[] = [];
-  let completeColumns: number[] = [];
-  let completeSquares: number[] = [];
+  try {
+    let completeRows: number[] = [];
+    let completeColumns: number[] = [];
+    let completeSquares: number[] = [];
 
-  for (let i = 0; i < 9; i++) {
-    if (isComplete('rows', i, input)) completeRows.push(i)
-    if (isComplete('columns', i, input)) completeColumns.push(i)
-    if (isComplete('squares', i, input)) completeSquares.push(i)
+    for (let i = 0; i < 9; i++) {
+      if (isComplete('rows', i, input)) completeRows.push(i)
+      if (isComplete('columns', i, input)) completeColumns.push(i)
+      if (isComplete('squares', i, input)) completeSquares.push(i)
+    }
+
+    const solved = completeRows.length === 9 && completeColumns.length === 9 && completeSquares.length === 9
+
+    return {
+      solved,
+      completeRows,
+      completeColumns,
+      completeSquares
+    }
+  } catch {
+    throw new Error('Completion check failed.')
   }
 
-  const solved = completeRows.length === 9 && completeColumns.length === 9 && completeSquares.length === 9
-
-  return {
-    solved,
-    completeRows,
-    completeColumns,
-    completeSquares
-  }
 }
