@@ -2,7 +2,7 @@
 export default function fillCell(cellIndex: number, input: number[], solution: number): number[] {
   // fallback for invalid solutions
   if (!solution || !Number.isInteger(solution) || solution < 0 || solution > 9) return input;
-  const newInput = [...input]
+  const newInput: number[] = [...input]
 
   newInput[cellIndex] = solution
 
