@@ -19,8 +19,8 @@ describe('solve', () => {
   it('returns a valid solution', () => {
     let solution = solveComplete(validSudoku)
     expect(solution).toBeDefined
-    // expect(solution.length).toBe(81)
-    // expect(solution).not.toContain(0)
+    expect(solution.length).toBe(81)
+    expect(solution).not.toContain(0)
   })
 
 })
