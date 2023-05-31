@@ -1,6 +1,6 @@
 import { grid } from "./grid";
 
-export default function getPossibleSolutionsForSingleCell(cellIndex: number, input: any[]): number[] {
+export default function getPossibleSolutionsForSingleCell(cellIndex: number, input: number[]): number[] {
   //input = [0, 0, 9, 0, 5, 6, 0, 0, 3, ....]
   const cellValue = input[cellIndex]
 
