@@ -13,6 +13,18 @@ const invalidSudoku = [
   5, 6, 7, 4, 2, 9, 999, 1, 3
 ]
 
+const doubleNumbers = [
+  2, 7, 0, 5, 8, 3, 0, 2, 0,
+  0, 5, 9, 2, 0, 0, 3, 0, 0,
+  3, 4, 0, 0, 0, 6, 5, 0, 7,
+  7, 9, 5, 0, 0, 0, 6, 3, 2,
+  0, 0, 3, 6, 9, 7, 1, 0, 0,
+  6, 8, 0, 0, 0, 2, 7, 0, 6,
+  9, 1, 4, 8, 3, 5, 0, 7, 6,
+  0, 3, 0, 7, 0, 1, 4, 9, 5,
+  5, 6, 7, 4, 2, 9, 0, 1, 3
+]
+
 const validSudoku = [
   0, 7, 0, 5, 8, 3, 0, 2, 0,
   0, 5, 9, 2, 0, 0, 3, 0, 0,
@@ -27,6 +39,7 @@ const validSudoku = [
 
 describe('validateInput', () => {
 
+  // cell inputs
   it('returns true for valid inputs', () => {
     const result = validateInput(validSudoku)
     expect(result.valid).toEqual(true)
@@ -40,5 +53,26 @@ describe('validateInput', () => {
   it('returns correct amount of errors', () => {
     const result = validateInput(invalidSudoku)
     expect(result?.errors?.length).toEqual(4)
+  })
+
+  // unique numbers
+  it('returns false for double numbers', () => {
+    const result = validateInput(doubleNumbers)
+    expect(result?.valid).toBe(false)
+  })
+
+  it('returns correct row index for double numbers', () => {
+    const result = validateInput(doubleNumbers)
+    expect(result?.errors).toContain('Values of row 0 are not unique')
+  })
+
+  it('returns correct column index for double numbers', () => {
+    const result = validateInput(doubleNumbers)
+    expect(result?.errors).toContain('Values of column 8 are not unique')
+  })
+
+  it('returns correct square index for double numbers', () => {
+    const result = validateInput(doubleNumbers)
+    expect(result?.errors).toContain('Values of square 5 are not unique')
   })
 })
