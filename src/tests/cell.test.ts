@@ -21,9 +21,9 @@ describe('cell', () => {
   })
 
   it("returns 'solved' for cells with value > 0", () => {
-    expect(getPossibleSolutionsForSingleCell(1, sudoku)).toBe('solved')
-    expect(getPossibleSolutionsForSingleCell(80, sudoku)).toBe('solved')
-    expect(getPossibleSolutionsForSingleCell(45, sudoku)).toBe('solved')
+    expect(getPossibleSolutionsForSingleCell(1, sudoku)).toEqual([7])
+    expect(getPossibleSolutionsForSingleCell(80, sudoku)).toEqual([3])
+    expect(getPossibleSolutionsForSingleCell(45, sudoku)).toEqual([6])
   })
 
   it("throws error for cell values > 9", () => {
