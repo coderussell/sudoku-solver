@@ -15,7 +15,7 @@
       <button @click="solver.clear">Clear</button>
       <div>
         <button @click="solver.showExample">Example</button>
-        <button @click="solver.solve">Solve</button>
+        <button class="primary" @click="solver.solve">Solve</button>
       </div>
     </div>
 
@@ -117,17 +117,23 @@ h1 {
     height: 48px;
     min-width: 96px;
     font-size: 0.9375rem;
-    border: 2px solid #4B3F72;
+    border: 2px solid #533aa5;
     border-radius: 12px;
     background: none;
-    color: #4B3F72;
+    color: #533aa5;
     padding: 0.5rem 1.5rem;
     cursor: pointer;
 
-    &:hover {
-      background-color: #4B3F72;
+    &.primary {
+      background-color: #533aa5;
       color: white;
-      border: 2px solid #4B3F72;
+
+    }
+
+    &:hover {
+      background-color: #533aa5;
+      color: white;
+      border: 2px solid #533aa5;
     }
 
     &:active {
