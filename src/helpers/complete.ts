@@ -26,17 +26,13 @@ export function getCompleteSectionIndices(input: number[]): CompleteSections {
     let completeColumns: number[] = [];
     let completeSquares: number[] = [];
 
-
     for (let i = 0; i < 9; i++) {
-      console.log(completeRows)
       if (isComplete('rows', i, [...input])) completeRows.push(i)
       if (isComplete('columns', i, [...input])) completeColumns.push(i)
       if (isComplete('squares', i, [...input])) completeSquares.push(i)
     }
 
     const solved = completeRows.length === 9 && completeColumns.length === 9 && completeSquares.length === 9
-
-    console.log(solved)
 
     return {
       solved,
