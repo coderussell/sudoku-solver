@@ -1,6 +1,7 @@
 import { ref, computed, reactive } from 'vue'
 import { defineStore } from 'pinia'
 import solveComplete from '../helpers/solve'
+import validateInput from '@/helpers/validate'
 
 export const useSolver = defineStore('solver', () => {
 
@@ -17,6 +18,8 @@ export const useSolver = defineStore('solver', () => {
   ])
 
   const solvedIndices: number[] = reactive([])
+
+  const messages: string[] = reactive([])
 
   // TEST
   const example: number[] = [
@@ -38,6 +41,7 @@ export const useSolver = defineStore('solver', () => {
     }
     Object.assign(sudoku, emptySudoku)
     solvedIndices.length = 0
+    messages.length = 0
   }
 
   const sleep = (ms: number) => {
@@ -69,5 +73,10 @@ export const useSolver = defineStore('solver', () => {
 
   // TODO: Function 'sovlveSingle'
 
-  return { sudoku, example, solvedIndices, solve, clear, showExample }
+  const validate = () => {
+    const validation = validateInput(sudoku)
+    Object.assign(messages, validation?.errors)
+  }
+
+  return { sudoku, example, solvedIndices, messages, solve, clear, showExample, validate }
 })

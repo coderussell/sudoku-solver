@@ -1,6 +1,6 @@
 import { grid } from "./grid";
 
-export default function validateInput(input: number[]): { valid: boolean, errors?: string[] } {
+export default function validateInput(input: number[]): { valid: boolean, errors: string[] } {
   let valid: boolean = true;
   let errors: string[] = []
   const { rows, columns, squares } = grid;
@@ -11,17 +11,18 @@ export default function validateInput(input: number[]): { valid: boolean, errors
   input.forEach((cell, index) => {
     if (!isValidCellValue(cell)) {
       valid = false;
-      errors.push(`Invalid input at index ${index}`)
+      errors.push(`Invalid input at index ${index + 1}`)
     }
   })
 
   // validate uniqueness in rows
   rows.forEach((row, index) => {
     let values: number[] = row.map(i => input[i]).filter(v => v !== 0)
+    console.log(values)
     let uniqueValues: Set<number> = new Set([...values])
     if (values.length !== uniqueValues.size) {
       valid = false;
-      errors.push(`Values of row ${index} are not unique`)
+      errors.push(`Values of row ${index + 1} are not unique`)
     }
   })
 
@@ -31,7 +32,7 @@ export default function validateInput(input: number[]): { valid: boolean, errors
     let uniqueValues: Set<number> = new Set([...values])
     if (values.length !== uniqueValues.size) {
       valid = false;
-      errors.push(`Values of column ${index} are not unique`)
+      errors.push(`Values of column ${index + 1} are not unique`)
     }
   })
 
@@ -41,7 +42,7 @@ export default function validateInput(input: number[]): { valid: boolean, errors
     let uniqueValues: Set<number> = new Set([...values])
     if (values.length !== uniqueValues.size) {
       valid = false;
-      errors.push(`Values of square ${index} are not unique`)
+      errors.push(`Values of square ${index + 1} are not unique`)
     }
   })
 

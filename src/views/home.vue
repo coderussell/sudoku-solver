@@ -18,6 +18,23 @@
         <button @click="solver.solve">Solve</button>
       </div>
     </div>
+
+    <div class="toast">
+      <template v-for="(message, index) of messages.slice(0, 5)">
+        <div class="errors">
+          <div>
+            <p class="title">Error</p>
+            <p>{{ message }}</p>
+          </div>
+          <div>
+            <button @click="removeError(index)">
+              <hr class="to-right" />
+              <hr class="to-left" />
+            </button>
+          </div>
+        </div>
+      </template>
+    </div>
   </div>
 </template>
 
@@ -27,7 +44,7 @@ import { useSolver } from '../stores/solver';
 import Cell from '@/components/Cell.vue';
 
 const solver = useSolver();
-const { sudoku } = solver
+const { sudoku, messages } = solver
 
 const focusedIndex: Ref<number | null> = ref(null)
 const whiteCells = [4, 5, 6, 13, 14, 15, 22, 23, 24, 28, 29, 30, 37, 38, 39, 46, 47, 48, 34, 35, 36, 43, 44, 45, 52, 53, 54, 58, 59, 60, 67, 68, 69, 76, 77, 78]
@@ -37,6 +54,10 @@ const changeFocus = (index: number) => focusedIndex.value = index
 window.addEventListener('keyup', (event) => {
   if (event.key === 'Escape') return changeFocus(-1)
 })
+
+const removeError = (index: number) => {
+  messages.splice(index, 1)
+}
 
 </script>
 
@@ -111,6 +132,78 @@ h1 {
 
     &:active {
       transform: scale(0.9);
+    }
+  }
+}
+
+.toast {
+  position: fixed;
+  min-width: 250px;
+  inset: 1rem 1.5rem auto auto;
+  display: grid;
+  gap: 12px;
+}
+
+.errors {
+  background-color: white;
+  padding: 1.25rem 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.09);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+
+
+  p.title {
+    font-size: 0.85rem;
+    opacity: 0.4;
+    margin-bottom: 0.25rem;
+    text-transform: uppercase;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  button {
+    height: 32px;
+    width: 32px;
+    color: grey;
+    background: rgba(grey, 0.1);
+    border: none;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+
+    &:hover {
+
+      hr {
+        opacity: 0.8;
+      }
+    }
+
+    hr {
+      position: absolute;
+      width: 50%;
+      height: 2px;
+      border-width: 0;
+      color: black;
+      background-color: black;
+      opacity: 0.4;
+    }
+
+    hr.to-left {
+      transform: rotate(45deg);
+      transform-origin: center;
+    }
+
+    hr.to-right {
+      transform: rotate(-45deg);
+      transform-origin: center;
     }
   }
 }
