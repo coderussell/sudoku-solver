@@ -31,6 +31,10 @@ const whiteCells = [4, 5, 6, 13, 14, 15, 22, 23, 24, 28, 29, 30, 37, 38, 39, 46,
 
 const changeFocus = (index: number) => focusedIndex.value = index
 
+window.addEventListener('keyup', (event) => {
+  if (event.key === 'Escape') return changeFocus(-1)
+})
+
 </script>
 
 <style scoped lang="scss">
@@ -63,7 +67,8 @@ h1 {
     width: 100%;
     overflow: hidden;
 
-    &.focused-cell {
+    &.focused-cell,
+    &:hover {
       box-shadow: 0 0 1px white, 0 0 4px rgba(purple, 0.5);
     }
 
