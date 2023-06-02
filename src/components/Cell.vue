@@ -1,11 +1,13 @@
 <template>
   <div class="input-wrapper">
-    <input ref="cell" type="text" :value="value" maxlength="1" @focus="emit('focused', index)"
-      @keypress.prevent="update($event)" @click="moveCaret($event)" @keyup.backspace="emit('update:modelValue', 0)" />
+    <input :class="{ 'solved': solvedIndices.includes(index - 1) }" ref="cell" type="text" :value="value" maxlength="1"
+      @focus="emit('focused', index)" @keypress.prevent="update($event)" @click="moveCaret($event)"
+      @keyup.backspace="emit('update:modelValue', 0)" />
   </div>
 </template>
 
 <script setup lang="ts">
+import { useSolver } from '@/stores/solver';
 import { toRefs, computed } from 'vue';
 
 const props = defineProps<{
@@ -19,6 +21,9 @@ const emit = defineEmits<{
 }>()
 
 const { index, modelValue } = toRefs(props)
+
+const solver = useSolver()
+const { solvedIndices } = solver
 
 const value = computed(() => {
   return modelValue?.value || '';
@@ -73,5 +78,10 @@ input {
   caret-color: transparent;
   cursor: pointer;
   background: transparent;
+
+  &.solved {
+    color: #4B3F72;
+    font-weight: 600;
+  }
 }
 </style>

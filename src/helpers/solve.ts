@@ -7,7 +7,7 @@ import fillCell from './fill'
 export default function solveComplete(input: number[]) {
   // validate Input
   try {
-    const validation = validateInput(input)
+    const validation = validateInput([...input])
     if (!validation.valid) {
       validation.errors?.forEach(error => {
         throw new Error(error)

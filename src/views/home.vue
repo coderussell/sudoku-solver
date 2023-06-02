@@ -12,8 +12,11 @@
     </div>
 
     <div class="actions">
-      <button @click="solver.reset">Reset</button>
-      <button @click="solver.solve">Solve</button>
+      <button @click="solver.clear">Clear</button>
+      <div>
+        <button @click="solver.showExample">Example</button>
+        <button @click="solver.solve">Solve</button>
+      </div>
     </div>
   </div>
 </template>
@@ -60,7 +63,7 @@ h1 {
 
   &>div {
     display: inline;
-    background: rgba(purple, 0.04);
+    background: rgba(#4B3F72, 0.04);
     color: rgba(0, 0, 0, 0.2);
     font-size: 0.875rem;
     border-radius: 4px;
@@ -69,7 +72,7 @@ h1 {
 
     &.focused-cell,
     &:hover {
-      box-shadow: 0 0 1px white, 0 0 4px rgba(purple, 0.5);
+      box-shadow: 0 0 1px white, 0 0 4px rgba(#4B3F72, 0.5);
     }
 
     &.white-cell {
@@ -84,20 +87,26 @@ h1 {
   justify-content: space-between;
   gap: 12px;
 
+  div {
+    display: flex;
+    gap: 12px;
+  }
+
   button {
     height: 48px;
-    width: 99px;
-    font-size: 1.25rem;
-    border: 2px solid purple;
+    min-width: 96px;
+    font-size: 0.9375rem;
+    border: 2px solid #4B3F72;
     border-radius: 12px;
     background: none;
-    color: purple;
+    color: #4B3F72;
+    padding: 0.5rem 1.5rem;
     cursor: pointer;
 
     &:hover {
-      background-color: purple;
+      background-color: #4B3F72;
       color: white;
-      border: 2px solid purple;
+      border: 2px solid #4B3F72;
     }
 
     &:active {

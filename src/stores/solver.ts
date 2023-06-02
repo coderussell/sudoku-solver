@@ -16,33 +16,58 @@ export const useSolver = defineStore('solver', () => {
     0, 0, 0, 0, 0, 0, 0, 0, 0
   ])
 
-  // TEST
-  // const sudoku: number[] = reactive([
-  //   0, 7, 0, 5, 8, 3, 0, 2, 0,
-  //   0, 5, 9, 2, 0, 0, 3, 0, 0,
-  //   3, 4, 0, 0, 0, 6, 5, 0, 7,
-  //   7, 9, 5, 0, 0, 0, 6, 3, 2,
-  //   0, 0, 3, 6, 9, 7, 1, 0, 0,
-  //   6, 8, 0, 0, 0, 2, 7, 0, 0,
-  //   9, 1, 4, 8, 3, 5, 0, 7, 6,
-  //   0, 3, 0, 7, 0, 1, 4, 9, 5,
-  //   5, 6, 7, 4, 2, 9, 0, 1, 3
-  // ])
+  const solvedIndices: number[] = reactive([])
 
-  const reset = () => {
+  // TEST
+  const example: number[] = [
+    0, 7, 0, 5, 8, 3, 0, 2, 0,
+    0, 5, 9, 2, 0, 0, 3, 0, 0,
+    3, 4, 0, 0, 0, 6, 5, 0, 7,
+    7, 9, 5, 0, 0, 0, 6, 3, 2,
+    0, 0, 3, 6, 9, 7, 1, 0, 0,
+    6, 8, 0, 0, 0, 2, 7, 0, 0,
+    9, 1, 4, 8, 3, 5, 0, 7, 6,
+    0, 3, 0, 7, 0, 1, 4, 9, 5,
+    5, 6, 7, 4, 2, 9, 0, 1, 3
+  ]
+
+  const clear = () => {
     const emptySudoku: number[] = [];
-    for (let i = 0; i <= 81; i++) {
+    for (let i = 0; i <= 80; i++) {
       emptySudoku.push(0);
     }
     Object.assign(sudoku, emptySudoku)
+    solvedIndices.length = 0
   }
 
-  const solve = (): void => {
+  const sleep = (ms: number) => {
+    return new Promise(resolve => setTimeout(resolve, ms))
+  }
+
+  const solve = async (): Promise<void> => {
     const solution = solveComplete(sudoku)
-    Object.assign(sudoku, solution)
+
+    const assignSolution = (index: number) => {
+      return sleep(50).then(() => {
+        solvedIndices.push(index)
+        sudoku[index] = solution[index]
+      })
+    }
+
+    for (let i = 0; i <= 80; i++) {
+      if (sudoku[i] === 0) {
+        await assignSolution(i)
+      }
+    }
+
+    // Object.assign(sudoku, solution)
+  }
+
+  const showExample = (): void => {
+    Object.assign(sudoku, example)
   }
 
   // TODO: Function 'sovlveSingle'
 
-  return { sudoku, solve, reset }
+  return { sudoku, example, solvedIndices, solve, clear, showExample }
 })
