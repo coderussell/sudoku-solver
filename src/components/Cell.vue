@@ -2,7 +2,7 @@
   <div class="input-wrapper">
     <input :class="{ 'solved': solvedIndices.includes(index - 1) }" ref="cell" type="text" :value="value" maxlength="1"
       @focus="emit('focused', index)" @focusout="emit('focused', -1)" @keypress.prevent="update($event)"
-      @click="moveCaret($event)" @keyup.backspace="emit('update:modelValue', 0)" />
+      @click="moveCaret($event)" @keyup.backspace="emit('update:modelValue', 0); solver.validate()" />
   </div>
 </template>
 
@@ -38,7 +38,6 @@ const moveCaret = (event: any) => {
 }
 
 const update = (input: any) => {
-  if (input.key === "backspace") return emit('update:modelValue', 0)
   let parsedInput: number = Number(input.key)
   if (!validInput(parsedInput)) parsedInput = 0;
   if (!!value.value && parsedInput === 0) return;
