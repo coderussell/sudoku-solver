@@ -18,7 +18,6 @@ export default function validateInput(input: number[]): { valid: boolean, errors
   // validate uniqueness in rows
   rows.forEach((row, index) => {
     let values: number[] = row.map(i => input[i]).filter(v => v !== 0)
-    console.log(values)
     let uniqueValues: Set<number> = new Set([...values])
     if (values.length !== uniqueValues.size) {
       valid = false;

@@ -63,16 +63,16 @@ describe('validateInput', () => {
 
   it('returns correct row index for double numbers', () => {
     const result = validateInput(doubleNumbers)
-    expect(result?.errors).toContain('Values of row 0 are not unique')
+    expect(result?.errors).toContain('Values of row 1 are not unique')
   })
 
   it('returns correct column index for double numbers', () => {
     const result = validateInput(doubleNumbers)
-    expect(result?.errors).toContain('Values of column 8 are not unique')
+    expect(result?.errors).toContain('Values of column 9 are not unique')
   })
 
   it('returns correct square index for double numbers', () => {
     const result = validateInput(doubleNumbers)
-    expect(result?.errors).toContain('Values of square 5 are not unique')
+    expect(result?.errors).toContain('Values of square 6 are not unique')
   })
 })

@@ -22,16 +22,28 @@ export const useSolver = defineStore('solver', () => {
   const messages: string[] = reactive([])
 
   // TEST
-  const example: number[] = [
-    0, 7, 0, 5, 8, 3, 0, 2, 0,
-    0, 5, 9, 2, 0, 0, 3, 0, 0,
-    3, 4, 0, 0, 0, 6, 5, 0, 7,
-    7, 9, 5, 0, 0, 0, 6, 3, 2,
-    0, 0, 3, 6, 9, 7, 1, 0, 0,
-    6, 8, 0, 0, 0, 2, 7, 0, 0,
-    9, 1, 4, 8, 3, 5, 0, 7, 6,
-    0, 3, 0, 7, 0, 1, 4, 9, 5,
-    5, 6, 7, 4, 2, 9, 0, 1, 3
+  // const example: number[] = [
+  //   0, 7, 0, 5, 8, 3, 0, 2, 0,
+  //   0, 5, 9, 2, 0, 0, 3, 0, 0,
+  //   3, 4, 0, 0, 0, 6, 5, 0, 7,
+  //   7, 9, 5, 0, 0, 0, 6, 3, 2,
+  //   0, 0, 3, 6, 9, 7, 1, 0, 0,
+  //   6, 8, 0, 0, 0, 2, 7, 0, 0,
+  //   9, 1, 4, 8, 3, 5, 0, 7, 6,
+  //   0, 3, 0, 7, 0, 1, 4, 9, 5,
+  //   5, 6, 7, 4, 2, 9, 0, 1, 3
+  // ]
+
+  const example = [
+    2, 0, 3, 0, 0, 0, 0, 8, 0,
+    0, 0, 1, 9, 0, 7, 4, 0, 0,
+    0, 0, 4, 5, 2, 0, 1, 0, 0,
+    0, 0, 0, 7, 0, 0, 0, 5, 0,
+    7, 0, 0, 0, 9, 0, 0, 0, 6,
+    0, 6, 0, 0, 0, 1, 0, 0, 0,
+    0, 0, 2, 0, 1, 8, 9, 0, 0,
+    0, 0, 7, 4, 0, 5, 6, 0, 0,
+    0, 3, 0, 0, 0, 0, 5, 0, 8
   ]
 
   const clear = () => {
@@ -54,7 +66,7 @@ export const useSolver = defineStore('solver', () => {
     const assignSolution = (index: number) => {
       return sleep(50).then(() => {
         solvedIndices.push(index)
-        sudoku[index] = solution[index]
+        sudoku[index] = solution.output[index]
       })
     }
 
@@ -64,6 +76,9 @@ export const useSolver = defineStore('solver', () => {
       }
     }
 
+    if (!solution.solved) messages.push('No unique solution for this puzzle.')
+    // if (solution.solved) messages.push('Boom. Here is your solution.')
+
     // Object.assign(sudoku, solution)
   }
 
@@ -71,10 +86,11 @@ export const useSolver = defineStore('solver', () => {
     Object.assign(sudoku, example)
   }
 
-  // TODO: Function 'sovlveSingle'
+  // TODO: Function 'solveSingle'
 
   const validate = () => {
     const validation = validateInput(sudoku)
+    messages.length = 0;
     Object.assign(messages, validation?.errors)
   }
 

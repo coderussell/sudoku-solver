@@ -3,8 +3,9 @@ import getPossibleSolutionsForSingleCell from './cell'
 import validateInput from './validate'
 import isComplete, { getCompleteSectionIndices, type CompleteSections } from './complete'
 import fillCell from './fill'
+import solveSection from './section'
 
-export default function solveComplete(input: number[]) {
+export default function solveComplete(input: number[]): { output: number[], solved: boolean } {
   // validate Input
   try {
     const validation = validateInput([...input])
@@ -21,40 +22,35 @@ export default function solveComplete(input: number[]) {
   let completion: CompleteSections = getCompleteSectionIndices(input)
 
   // returns original input, if sudoku is already solved
-  if (completion.solved) return input;
+  if (completion.solved) return {
+    output: input,
+    solved: true
+  };
 
   let output: number[] = [...input]
 
   while (completion.solved === false) {
-    // let rowsToCheck: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-    // let columnsToCheck: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-    // let squaresToCheck: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-    // const { completeRows, completeColumns, completeSquares } = completion
+    let solvedCellsCount: number = output.filter(el => el !== 0).length
 
-    // rowsToCheck = rowsToCheck.filter(row => !completeRows.includes(row))
-    // columnsToCheck = columnsToCheck.filter(column => !completeColumns.includes(column))
-    // squaresToCheck = squaresToCheck.filter(square => !completeSquares.includes(square))
+    // loop through sections
+    for (let i = 0; i <= 8; i++) {
+      output = solveSection('rows', i, output)
+      output = solveSection('columns', i, output)
+      output = solveSection('squares', i, output)
+    }
 
-    // define empty cell indizes
-    // let emptyCells: number[] = [];
-    // for (let i = 0; i <= 80; i++) {
-    //   if (output[i] === 0) emptyCells.push(i)
-    // }
+    let newSolvedCellsCount: number = output.filter(el => el !== 0).length
 
-    // loop through emptyCells and fill in solutions where possible
-    let solvedCells: number = 0;
-    output.forEach((cell: number, index) => {
-      if (cell === 0) {
-        const solutions = getPossibleSolutionsForSingleCell(index, output)
-        if (solutions.length === 1) {
-          output = fillCell(index, output, solutions[0])
-          solvedCells++
-        }
-      }
-    })
-    if (solvedCells === 0) throw new Error('Sudoku could not be solved')
+    // // if (solvedCells === 0) throw new Error('Sudoku could not be solved')
+    if (newSolvedCellsCount === solvedCellsCount) {
+      console.log(output)
+      break;
+    };
     completion = getCompleteSectionIndices(output)
   }
 
-  return output
+  return {
+    output,
+    solved: completion.solved
+  }
 }
