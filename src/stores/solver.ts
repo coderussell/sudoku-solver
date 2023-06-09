@@ -1,7 +1,8 @@
-import { ref, computed, reactive } from 'vue'
+import { ref, computed, reactive, type Ref } from 'vue'
 import { defineStore } from 'pinia'
 import solveComplete from '../helpers/solve'
 import validateInput from '@/helpers/validate'
+import solveSection from '@/helpers/section'
 
 export const useSolver = defineStore('solver', () => {
 
@@ -84,9 +85,8 @@ export const useSolver = defineStore('solver', () => {
 
   const showExample = (): void => {
     Object.assign(sudoku, example)
+    solvedIndices.length = 0;
   }
-
-  // TODO: Function 'solveSingle'
 
   const validate = () => {
     const validation = validateInput(sudoku)
@@ -94,5 +94,40 @@ export const useSolver = defineStore('solver', () => {
     Object.assign(messages, validation?.errors)
   }
 
-  return { sudoku, example, solvedIndices, messages, solve, clear, showExample, validate }
+  const iterationCount: Ref<number> = ref(0);
+
+  const solveSingle = () => {
+    let firstIteration = [...sudoku];
+    const sectionTypes: ('rows' | 'columns' | 'squares')[] = ['rows', 'columns', 'squares']
+
+    // loop throgh a random section type
+    for (let i = 0; i <= 8; i++) {
+      firstIteration = solveSection(sectionTypes[iterationCount.value], i, firstIteration)
+    }
+    iterationCount.value++
+
+    // get indices that solved compared to original input
+    const solved: number[] = []
+    firstIteration.forEach((cell, index) => {
+      if (cell > 0 && cell !== sudoku[index]) solved.push(index)
+    })
+
+    if (!solved.length && iterationCount.value < 2) return solveSingle
+    if (!solved.length && iterationCount.value === 2) {
+      iterationCount.value = 0;
+      throw new Error('no solution found.')
+    }
+
+    // get random index
+    const randomIndex: number = Math.floor(Math.random() * solved.length)
+    const singleSolutionIndex: number = solved[randomIndex]
+
+    // fill in one cell at random index
+    solvedIndices.push(singleSolutionIndex)
+    sudoku[singleSolutionIndex] = firstIteration[singleSolutionIndex]
+
+    iterationCount.value = 0;
+  }
+
+  return { sudoku, example, solvedIndices, messages, solve, clear, showExample, validate, solveSingle }
 })

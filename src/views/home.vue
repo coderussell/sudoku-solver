@@ -12,9 +12,12 @@
     </div>
 
     <div class="actions">
-      <button @click="solver.clear">Clear</button>
       <div>
+        <button @click="solver.clear">Clear</button>
         <button @click="solver.showExample">Example</button>
+      </div>
+      <div>
+        <button class="primary" @click="solver.solveSingle">Hint</button>
         <button class="primary" @click="solver.solve">Solve</button>
       </div>
     </div>
@@ -110,14 +113,14 @@ h1 {
 
   div {
     display: flex;
-    gap: 12px;
+    gap: 8px;
   }
 
   button {
-    height: 48px;
-    min-width: 96px;
-    font-size: 0.9375rem;
-    border: 2px solid #533aa5;
+    height: 32px;
+    min-width: 64px;
+    font-size: 0.75rem;
+    border: 1px solid #533aa5;
     border-radius: 12px;
     background: none;
     color: #533aa5;
@@ -133,7 +136,7 @@ h1 {
     &:hover {
       background-color: #533aa5;
       color: white;
-      border: 2px solid #533aa5;
+      border: 1px solid #533aa5;
     }
 
     &:active {
