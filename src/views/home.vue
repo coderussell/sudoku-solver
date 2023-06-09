@@ -17,8 +17,8 @@
         <button @click="solver.showExample">Example</button>
       </div>
       <div>
-        <button class="primary" @click="solver.solveSingle">Hint</button>
-        <button class="primary" @click="solver.solve">Solve</button>
+        <button class="primary" :class="{ 'disabled': !valid }" @click="solver.solveSingle">Hint</button>
+        <button class="primary" :class="{ 'disabled': !valid }" @click="solver.solve">Solve</button>
       </div>
     </div>
 
@@ -42,12 +42,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type Ref } from 'vue'
+import { watch, ref, type Ref, toRefs } from 'vue'
 import { useSolver } from '../stores/solver';
 import Cell from '@/components/Cell.vue';
 
 const solver = useSolver();
 const { sudoku, messages } = solver
+const { valid } = toRefs(solver)
+
+watch(sudoku, () => {
+  solver.validate()
+})
 
 const focusedIndex: Ref<number | null> = ref(null)
 const whiteCells = [4, 5, 6, 13, 14, 15, 22, 23, 24, 28, 29, 30, 37, 38, 39, 46, 47, 48, 34, 35, 36, 43, 44, 45, 52, 53, 54, 58, 59, 60, 67, 68, 69, 76, 77, 78]
@@ -133,14 +138,19 @@ h1 {
 
     }
 
-    &:hover {
+    &:hover:not(.disabled) {
       background-color: #533aa5;
       color: white;
       border: 1px solid #533aa5;
     }
 
-    &:active {
+    &:active:not(.disabled) {
       transform: scale(0.9);
+    }
+
+    &.disabled {
+      opacity: 0.5;
+      cursor: auto;
     }
   }
 }

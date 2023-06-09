@@ -5,6 +5,15 @@ export default function validateInput(input: number[]): { valid: boolean, errors
   let errors: string[] = []
   const { rows, columns, squares } = grid;
 
+  // check if sudoku is empty
+  let reducedInput: number[] = [...new Set([...input])]
+  if (reducedInput.length === 1 && reducedInput[0] === 0) {
+    return {
+      valid: false,
+      errors: []
+    }
+  }
+
   // validate cell inputs: integers from 0 to 9
   // TODO: split validation tests and return individual error messages
   const isValidCellValue = (n: number): boolean => (Number.isInteger(n) && n >= 0 && n <= 9)

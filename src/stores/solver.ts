@@ -19,7 +19,7 @@ export const useSolver = defineStore('solver', () => {
   ])
 
   const solvedIndices: number[] = reactive([])
-
+  const valid: Ref<boolean> = ref(false);
   const messages: string[] = reactive([])
 
   // TEST
@@ -62,6 +62,8 @@ export const useSolver = defineStore('solver', () => {
   }
 
   const solve = async (): Promise<void> => {
+    if (!valid.value) return;
+
     const solution = solveComplete(sudoku)
 
     const assignSolution = (index: number) => {
@@ -90,6 +92,7 @@ export const useSolver = defineStore('solver', () => {
 
   const validate = () => {
     const validation = validateInput(sudoku)
+    valid.value = validation.valid
     messages.length = 0;
     Object.assign(messages, validation?.errors)
   }
@@ -97,6 +100,8 @@ export const useSolver = defineStore('solver', () => {
   const iterationCount: Ref<number> = ref(0);
 
   const solveSingle = () => {
+    if (!valid.value) return;
+
     let firstIteration = [...sudoku];
     const sectionTypes: ('rows' | 'columns' | 'squares')[] = ['rows', 'columns', 'squares']
 
@@ -129,5 +134,5 @@ export const useSolver = defineStore('solver', () => {
     iterationCount.value = 0;
   }
 
-  return { sudoku, example, solvedIndices, messages, solve, clear, showExample, validate, solveSingle }
+  return { sudoku, example, solvedIndices, valid, messages, solve, clear, showExample, validate, solveSingle }
 })
